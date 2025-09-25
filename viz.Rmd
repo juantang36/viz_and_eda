@@ -1,0 +1,139 @@
+---
+title: "viz_and_eda"
+author: "Juan Tang"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup}
+library(tidyverse)
+library(ggridges)
+library(p8105.datasets)
+```
+
+import the weather data 
+
+```{r}
+data("weather_df")
+```
+
+making the first plot
+```{r}
+ggplot(data = weather_df, mapping = aes(x = tmin, y = tmax)) + 
+  geom_point()
+```
+```{r}
+
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax)) + geom_point()
+```
+
+
+```{r}
+
+ggp_weather_scatterplot = 
+  weather_df |>
+  ggplot(aes(x = tmin, y = tmax)) + geom_point()
+ggp_weather_scatterplot
+
+```
+
+check that some rows are missing
+```{r}
+
+weather_df |>
+  filter(is.na(tmax))
+```
+
+## fancier scatterplots
+
+```{r}
+##trend line for each color (name)
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax, color = name)) + 
+  geom_point(alpha = 0.3) + 
+  geom_smooth(se = FALSE)
+```
+
+where you define aesthetics can matter
+
+```{r}
+
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = 0.3, size = 0.6) + 
+  geom_smooth(se = FALSE)
+##a smooth line for the entire scatterplot
+```
+
+use faceting real quick
+```{r}
+
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = 0.3, size = 0.6) + 
+  geom_smooth(se = FALSE) + 
+  facet_grid(. ~name)
+##create facet plot of three separate plots (columns)
+
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = 0.3, size = 0.6) + 
+  geom_smooth(se = FALSE) + 
+  facet_grid(name ~ .)
+##rows
+
+```
+```{r}
+
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax, color = name, shape = name)) + 
+  geom_point(aes(size = prcp), alpha = 0.3) + 
+  geom_smooth(se = FALSE) + 
+  facet_grid(. ~name)
+
+```
+```{r}
+weather_df |>
+  filter(name == "CentralPark_NY") |>
+  mutate(
+    tmax_fahr = tmax * (9/5) + 32, 
+    tmin_fahr = tmin * (9/5) + 32
+  ) |>
+  ggplot(aes(x = tmin_fahr, y = tmax_fahr)) + 
+  geom_point() + 
+  geom_smooth(se = FALSE) 
+```
+
+## small things
+```{r}
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax, color = name, shape = name)) + 
+ 
+  geom_smooth(se = FALSE) + 
+  geom_point(alpha = 0.3) 
+# points overlaying the line
+```
+```{r}
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_hex()
+
+```
+
+```{r}
+
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point(color = "blue")
+```
+
+## Univariable plots
+
+```{r}
+
+weather_df |>
+  ggplot(aes(x = tmin)) + 
+  geom_histogram(color = "white")
+```
+
