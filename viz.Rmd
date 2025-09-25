@@ -2,7 +2,7 @@
 title: "viz_and_eda"
 author: "Juan Tang"
 date: "`r Sys.Date()`"
-output: html_document
+output: github_document
 ---
 
 ```{r setup}
@@ -135,5 +135,24 @@ weather_df |>
 weather_df |>
   ggplot(aes(x = tmin)) + 
   geom_histogram(color = "white")
+```
+
+density plot 
+```{r}
+
+weather_df |>
+  ggplot(aes(x = tmin, fill = name)) + geom_density(alpha = 0.2)
+```
+```{r}
+weather_df |>
+  ggplot(aes(x = name, y = tmin)) + 
+  geom_boxplot(aes(fill = name))
+```
+violin plot
+```{r}
+
+weather_df |>
+  ggplot(aes(x = name, y = tmin)) + 
+  geom_violin()
 ```
 
